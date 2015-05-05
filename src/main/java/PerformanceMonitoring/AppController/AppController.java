@@ -2,11 +2,17 @@ package PerformanceMonitoring.AppController;
 
 
 import PerformanceMonitoring.Controller_Services.ServiceMethods;
+import PerformanceMonitoring.Model.Host;
 import PerformanceMonitoring.Model.Stats;
+import PerformanceMonitoring.Model.VM;
+import PerformanceMonitoring.Model.VMTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -44,6 +50,51 @@ public class AppController
     public Stats getvm(@PathVariable(value = "vm_name") String id)
     {
         return service.getVM(id);
+    }
+
+    @RequestMapping(value={"host"},method=RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Host testHost() throws MalformedURLException, RemoteException
+    {
+        return service.getHost();
+    }
+
+    @RequestMapping(value={"hosts"},method=RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Host> testHostList() throws MalformedURLException, RemoteException
+    {
+        return service.getHosts();
+    }
+
+    @RequestMapping(value={"vms"},method=RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<VM> getVMs() throws MalformedURLException, RemoteException
+    {
+        return service.getVMs();
+    }
+
+    @RequestMapping(value={"vms/startVM/{name}"},method=RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public VMTask startVM(@PathVariable String name) throws MalformedURLException, RemoteException
+    {
+        System.out.println("VMName "+name);
+        return service.startVM(name);
+    }
+
+    @RequestMapping(value={"vms/stopVM/{name}"},method=RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public VMTask stopVM(@PathVariable String name) throws MalformedURLException, RemoteException
+    {
+        System.out.println("VMName "+name);
+        return service.stopVM(name);
+    }
+
+    @RequestMapping(value={"vms/pauseVM/{name}"},method=RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public VMTask pauseVM(@PathVariable String name) throws MalformedURLException, RemoteException
+    {
+        System.out.println("VMName "+name);
+        return service.stopVM(name);
     }
 
 }
